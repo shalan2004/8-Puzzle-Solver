@@ -21,9 +21,9 @@ Our program allows users to input any 3×3 matrix and automatically solves it us
 - Handles unsolvable cases.
 
 # Repository Contents
-- README.md: Project overview and description.
-- Presentation.pdf: Project presentation slides.
-- 8PuzzleSolver.py: Python code for solving the puzzle.
+- README.md: (https://github.com/shalan2004/8-Puzzle-Solver/blob/main/README.md): Overview and details about the project.
+- Presentation.pdf: (https://drive.google.com/file/d/1WPO-eSwMY4m0u80zrxoi5jKcb-dMoSGu/view?usp=sharing): The project presentation.
+- game.py: (https://github.com/shalan2004/8-Puzzle-Solver/blob/main/game.py): The Python code for the game.
 
 # Note:
 0 represents the empty tile.
