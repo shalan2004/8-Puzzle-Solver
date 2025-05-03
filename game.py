@@ -32,7 +32,7 @@ def get_moves(state):
 
 def greedy(start):
     if not is_solvable(start):
-        messagebox.showerror("Unsolvable", "❌ This puzzle cannot be solved.")
+        messagebox.showerror("Unsolvable", "This puzzle cannot be solved.")
         return []
 
     heap = [(manhattan(start), 0, start, [])]
@@ -52,7 +52,7 @@ def greedy(start):
             if tuple(next_state) not in visited:
                 heapq.heappush(heap, (manhattan(next_state), cost + 1, next_state, path + [next_state]))
 
-    messagebox.showerror("No Solution", "❌ No solution found.")
+    messagebox.showerror("No Solution", "No solution found.")
     return []
 
 class PuzzleGUI:
@@ -98,7 +98,7 @@ class PuzzleGUI:
         try:
             nums = list(map(int, raw.split()))
             if sorted(nums) != list(range(9)):
-                messagebox.showerror("Invalid Input", "⚠️ Please enter 9 unique numbers from 0 to 8.")
+                messagebox.showerror("Invalid Input", "Please enter 9 unique numbers from 0 to 8.")
                 return
             self.state = nums
             self.update_board()
@@ -106,14 +106,14 @@ class PuzzleGUI:
             if path:
                 self.animate_solution(path)
         except Exception:
-            messagebox.showerror("Invalid Input", "⚠️ Invalid input format.")
+            messagebox.showerror("Invalid Input", "Invalid input format.")
 
     def animate_solution(self, path):
         if not path:
             return
         def step(i=0):
             if i >= len(path):
-                messagebox.showinfo("Done", f"✅ Solved in {len(path)} moves!")
+                messagebox.showinfo("Done", f"Solved in {len(path)} moves!")
                 return
             self.state = path[i]
             self.update_board()
