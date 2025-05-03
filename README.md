@@ -22,7 +22,7 @@ Our program allows users to input any 3×3 matrix and automatically solves it us
 
 # Repository Contents
 1. [README.md](https://github.com/shalan2004/8-Puzzle-Solver/blob/main/README.md): Overview and details about the project.
-2. [Presentation.pdf]([https://drive.google.com/file/d/1WPO-eSwMY4m0u80zrxoi5jKcb-dMoSGu/view?usp=sharing](https://www.canva.com/design/DAGlumg_vK4/bY_O326tGkdM8GAWbwFusQ/edit?utm_content=DAGlumg_vK4&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)): The project presentation.
+2. [Presentation.pdf](https://drive.google.com/file/d/1WPO-eSwMY4m0u80zrxoi5jKcb-dMoSGu/view): The project presentation.
 3. [game.py](https://github.com/shalan2004/8-Puzzle-Solver/blob/main/game.py): The Python code for the game.
 4. [Youtube Video](https://www.youtube.com/watch?v=90XUlSpVBd8)
 
