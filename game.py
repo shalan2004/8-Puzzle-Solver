@@ -1,6 +1,7 @@
 import heapq
 import tkinter as tk
-from tkinter import messagebox
+from collections import deque
+import time
 
 GOAL = [1, 2, 3, 4, 5, 6, 7, 8, 0]
 
@@ -31,10 +32,6 @@ def get_moves(state):
     return moves
 
 def greedy(start):
-    if not is_solvable(start):
-        messagebox.showerror("Unsolvable", "This puzzle cannot be solved.")
-        return []
-
     heap = [(manhattan(start), 0, start, [])]
     visited = set()
 
@@ -51,8 +48,25 @@ def greedy(start):
         for next_state in get_moves(curr):
             if tuple(next_state) not in visited:
                 heapq.heappush(heap, (manhattan(next_state), cost + 1, next_state, path + [next_state]))
+    return []
 
-    messagebox.showerror("No Solution", "No solution found.")
+def bfs(start):
+    queue = deque([(start, [])])
+    visited = set()
+
+    while queue:
+        curr, path = queue.popleft()
+        if curr == GOAL:
+            return path
+
+        t = tuple(curr)
+        if t in visited:
+            continue
+        visited.add(t)
+
+        for next_state in get_moves(curr):
+            if tuple(next_state) not in visited:
+                queue.append((next_state, path + [next_state]))
     return []
 
 class PuzzleGUI:
@@ -69,7 +83,7 @@ class PuzzleGUI:
             btn = tk.Button(self.frame, text=str(self.state[i]) if self.state[i] != 0 else '',
                             width=6, height=3, font=('Arial', 24),
                             command=lambda i=i: self.move_tile(i))
-            btn.grid(row=i//3, column=i%3, padx=5, pady=5)
+            btn.grid(row=i // 3, column=i % 3, padx=5, pady=5)
             self.tiles.append(btn)
 
         self.controls = tk.Frame(root)
@@ -80,6 +94,11 @@ class PuzzleGUI:
 
         self.solve_button = tk.Button(self.controls, text="Solve", command=self.start_solving, font=('Arial', 14))
         self.solve_button.grid(row=0, column=1, padx=5)
+
+        self.algo_var = tk.StringVar(value="Greedy")
+        self.algo_menu = tk.OptionMenu(self.controls, self.algo_var, "Greedy", "BFS")
+        self.algo_menu.config(font=('Arial', 14))
+        self.algo_menu.grid(row=0, column=2, padx=5)
 
     def move_tile(self, index):
         zero_index = self.state.index(0)
@@ -98,26 +117,44 @@ class PuzzleGUI:
         try:
             nums = list(map(int, raw.split()))
             if sorted(nums) != list(range(9)):
-                messagebox.showerror("Invalid Input", "Please enter 9 unique numbers from 0 to 8.")
+                print("Invalid input: Please enter 9 unique numbers from 0 to 8.")
                 return
+            if not is_solvable(nums):
+                print("Unsolvable puzzle.")
+                return
+
             self.state = nums
             self.update_board()
-            path = greedy(self.state)
-            if path:
+
+            algo = self.algo_var.get()
+
+            start_time = time.perf_counter()
+            if algo == "Greedy":
+                path = greedy(self.state)
+            else:
+                path = bfs(self.state)
+            end_time = time.perf_counter()
+
+            if path is not None:
+                duration = end_time - start_time
+                self.result_info = (algo, duration, len(path))  # Store for later print
                 self.animate_solution(path)
+            else:
+                print("No solution found.")
         except Exception:
-            messagebox.showerror("Invalid Input", "Invalid input format.")
+            print("Invalid input format.")
 
     def animate_solution(self, path):
         if not path:
             return
         def step(i=0):
             if i >= len(path):
-                messagebox.showinfo("Done", f"Solved in {len(path)} moves!")
+                algo, duration, moves = self.result_info
+                print(f"{algo} took {duration:.6f} seconds and {moves} moves.")
                 return
             self.state = path[i]
             self.update_board()
-            self.root.after(500, step, i + 1)
+            self.root.after(50, step, i + 1)
         step()
 
 if __name__ == "__main__":
